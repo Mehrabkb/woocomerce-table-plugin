@@ -8,7 +8,7 @@
             <div class="wrap">
             <form method="post">
                 <label for="name">دسته بندی را انتخاب کنید</label>
-                <select name="" id="">
+                <select name="products" id="">
                     <?php
                         $categories = get_terms([
                             'taxonomy' => 'product_cat',
@@ -41,5 +41,30 @@
             </form>
             </div>
         <?php
-        $categories = get_terms(['taxonomy' => 'product_cat']);
-    }
+    if (isset($_POST['submit_form'])){
+        $categoy_id = $_POST['products'];
+        $args = array(
+            'post_type' => 'product',
+            'numberposts' => -1,
+            'post_status' => 'publish',
+            'fields' => 'ids',
+            'tax_query' => array(
+                array(
+                    'taxonomy' => 'product_cat',
+                    'field' => 'term_id',
+                    'terms' => $categoy_id,
+                    'operator' => 'IN',
+                ),
+            ),
+        );
+        $all_ids = get_posts($args);    
+        for($i = 0 ; $i < count($all_ids) ; $i++){
+            $product = wc_get_product($all_ids[$i]);
+            echo "<p> {$product->get_name()} </p>";
+            echo "<p> {$product->get_price()} </p> ";
+            print('<pre>' . print_r($product->get_attributes()) . '</pre>');
+            // print("<pre>".print_r($product->get_price()) . "</pre>");
+        }
+
+    }    
+}
