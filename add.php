@@ -10,9 +10,29 @@
                 <label for="name">دسته بندی را انتخاب کنید</label>
                 <select name="" id="">
                     <?php
-                        $categories = get_terms(['taxonomy' => 'product_cat']);
+                        $categories = get_terms([
+                            'taxonomy' => 'product_cat',
+                            'hide_empty' => true,
+                            'parent' => 0
+                        ]);
                         foreach ($categories as $key => $value) {
-                           echo "<option> {$value->name} </option>" ;
+                            $args = array(
+                                'post_type' => 'product',
+                                'numberposts' => -1,
+                                'post_status' => 'publish',
+                                'fields' => 'ids',
+                                'tax_query' => array(
+                                    array(
+                                        'taxonomy' => 'product_cat',
+                                        'field' => 'term_id',
+                                        'terms' => $value->term_id,
+                                        'operator' => 'IN',
+                                    ),
+                                ),
+                            );
+                            $all_ids = get_posts($args);
+                            $all_ids_count = count($all_ids);
+                            echo "<option value='{$value->term_id}'> {$value->name}  {$all_ids_count} </option>" ;
                         }
                     ?>
                 </select>
@@ -21,4 +41,5 @@
             </form>
             </div>
         <?php
+        $categories = get_terms(['taxonomy' => 'product_cat']);
     }
