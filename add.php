@@ -6,7 +6,7 @@
     function wtp_add_function(){
         ?>
             <div class="wrap">
-            <form method="post">
+            <form method="post" class="add-form">
                 <label for="name">دسته بندی را انتخاب کنید</label>
                 <select name="products" id="">
                     <?php
@@ -36,7 +36,6 @@
                         }
                     ?>
                 </select>
-                <br>
                 <input type="submit" class="button button-primary" name="submit_form" value="ثبت">
             </form>
             </div>
@@ -57,14 +56,41 @@
                 ),
             ),
         );
-        $all_ids = get_posts($args);    
-        for($i = 0 ; $i < count($all_ids) ; $i++){
-            $product = wc_get_product($all_ids[$i]);
-            echo "<p> {$product->get_name()} </p>";
-            echo "<p> {$product->get_price()} </p> ";
-            print('<pre>' . print_r($product->get_attributes()) . '</pre>');
-            // print("<pre>".print_r($product->get_price()) . "</pre>");
+        $all_ids = get_posts($args);    ?>
+        
+        <table id = 'finalTbl' class='display' style='width : 80%; margin : 0 auto;'>
+            <thead>
+                <tr>
+                    <th>
+                        نام محصول
+                    </th>
+                    <th>
+                        قیمت محصول
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+            for($i = 0 ; $i < count($all_ids) ; $i++){
+                $product = wc_get_product($all_ids[$i]);
+                ?>
+            <tr>
+                <td><?php echo $product->get_name(); ?></td>
+                <td><?php echo number_format($product->get_price()); ?></td>
+            </tr>
+        <?php 
         }
-
-    }    
+        ?>
+        </tbody>
+        </table>
+    <?php
+    add_after_submit_form();
+    }   
 }
+function jsTblCaller(){
+    wp_register_script('myScript' , plugins_url('woocommerceTblPlugin/assets/script.js'));
+    wp_enqueue_script('myScript');
+}
+function add_after_submit_form(){
+    add_action('admin_print_scripts' , 'jsTblCaller');
+}   

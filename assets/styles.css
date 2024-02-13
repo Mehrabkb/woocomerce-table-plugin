@@ -1,0 +1,10 @@
+.dataTables_wrapper{
+    width :80%;
+    margin : 0 auto;
+}
+.add-form{
+    padding: 20px;
+  border: 1px solid #000;
+  margin-bottom: 30px;
+  text-align: center;
+}
