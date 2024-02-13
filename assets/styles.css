@@ -8,3 +8,6 @@
   margin-bottom: 30px;
   text-align: center;
 }
+#finalTbl thead th{
+    text-align: right!important;
+}

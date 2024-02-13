@@ -62,6 +62,9 @@
             <thead>
                 <tr>
                     <th>
+                        ستون
+                    </th>
+                    <th>
                         نام محصول
                     </th>
                     <th>
@@ -71,10 +74,12 @@
             </thead>
             <tbody>
                 <?php
+                $count = 0 ;
             for($i = 0 ; $i < count($all_ids) ; $i++){
                 $product = wc_get_product($all_ids[$i]);
                 ?>
             <tr>
+                <td><?php echo ++$count; ?></td>
                 <td><?php echo $product->get_name(); ?></td>
                 <td><?php echo number_format($product->get_price()); ?></td>
             </tr>
