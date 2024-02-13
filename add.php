@@ -1,4 +1,5 @@
 <?php
+    // this function add my menu to wordpress menu 
     function wtp_plugin_add_add_menu(){
         add_menu_page('اضافه کردن جدول', 'اضافه کردن جدول', 'manage_options','add-tbl', 'wtp_add_function');
     }
