@@ -8,6 +8,9 @@
  */
 
 // Your plugin code goes here!
+if( !defined('ABSPATH')){
+    die('شما مجاز به دسترسی نمیباشید');
+}
 
 require_once (__DIR__ . '/add.php');
 function tblAssetsCss() {
@@ -24,3 +27,19 @@ function tblAssetsJs(){
     wp_enqueue_script('myScript');
 }
 add_action('admin_print_scripts' , 'tblAssetsJs');
+function jal_install() {
+    global $wpdb;
+    $wp_track_table = $wpdb->prefix . "wtcplugin";
+    $charset = $wpdb->get_charset_collate();
+    
+    $sql = "CREATE TABLE $wp_track_table(
+        wtc_id int(10) NOT NULL AUTO_INCREMENT,
+        category_id int ,
+        PRIMARY KEY (wtc_id)
+    ) $charset ;";
+    require_once(ABSPATH . "wp-admin/includes/upgrade.php");
+    dbDelta($sql);
+}
+
+// Register the activation hook to call the table creation function
+register_activation_hook(__FILE__, "jal_install");
