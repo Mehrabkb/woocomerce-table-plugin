@@ -5,6 +5,7 @@
     }
     add_action('admin_menu' , 'wtp_plugin_add_add_menu');
     function wtp_add_function(){
+        global $wpdb ;
         ?>
             <div class="wrap">
             <form method="post" class="add-form">
@@ -43,6 +44,28 @@
         <?php
     if (isset($_POST['submit_form'])){
         $categoy_id = $_POST['products'];
+        $result = $wpdb->get_results("SELECT * FROM `wp_wtcplugin` WHERE `category_id` = $categoy_id");
+        if(!$result){
+            $table_name = $wpdb->prefix . 'wtcplugin';
+            $data = array(
+                'category_id' => $categoy_id, // Assuming you're receiving this from a form
+            );
+            $format = array("%d");
+            $wpdb->insert($table_name , $data , $format);
+            $record_id = $wpdb->insert_id;
+        }
+        $allTableRecords = $wpdb->get_results("SELECT * FROM `wp_wtcplugin`");
+        $finalTblShowingRecords = [];
+        foreach ($allTableRecords as $atr){
+            $category = get_term($atr->category_id);
+            $category_name = $category->name;
+            array_push($finalTblShowingRecords , [
+                    'id' => $atr->category_id,
+                    'category_name' => $category_name,
+            ]);
+        }
+
+
         $args = array(
             'post_type' => 'product',
             'numberposts' => -1,
@@ -66,27 +89,46 @@
                         ستون
                     </th>
                     <th>
-                        نام محصول
+                        دسته بندی
                     </th>
                     <th>
-                        قیمت محصول(ریال)
+                         شورت کد
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <?php
+            <?php
                 $count = 0 ;
-            for($i = 0 ; $i < count($all_ids) ; $i++){
-                $product = wc_get_product($all_ids[$i]);
-                ?>
-            <tr>
-                <td><?php echo ++$count; ?></td>
-                <td><?php echo $product->get_name(); ?></td>
-                <td><?php echo number_format($product->get_price()); ?></td>
-            </tr>
-        <?php 
-        }
-        ?>
+                for($i = 0 ; $i < count($finalTblShowingRecords) ; $i++){
+                    ?>
+                  <tr>
+                    <td>  <?php echo ++$count; ?> </td>
+                    <td> <?php echo $finalTblShowingRecords[$i]['category_name']; ?>  </td>
+                    <td> <?php echo "[wtcTable cat_id=\"" .$finalTblShowingRecords[$i]['id'] . "\"]";  ?></td>
+                  </tr>
+                      <?php
+
+                }
+
+
+
+            ?>
+
+
+
+<!--                --><?php
+//                $count = 0 ;
+//            for($i = 0 ; $i < count($all_ids) ; $i++){
+//                $product = wc_get_product($all_ids[$i]);
+//                ?>
+<!--            <tr>-->
+<!--                <td>--><?php //echo ++$count; ?><!--</td>-->
+<!--                <td>--><?php //echo $product->get_name(); ?><!--</td>-->
+<!--                <td>--><?php //echo number_format($product->get_price()); ?><!--</td>-->
+<!--            </tr>-->
+<!--        --><?php //
+//        }
+//        ?>
         </tbody>
         </table>
     <?php
