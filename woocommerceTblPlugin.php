@@ -20,6 +20,7 @@ function tblAssetsCss() {
     wp_enqueue_style('myStyles');
 }   
 add_action('admin_print_styles', 'tblAssetsCss');
+add_action('wp_print_styles' , 'tblAssetsCss');
 function tblAssetsJs(){
     wp_register_script('dataTblJs', 'https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js');
     wp_enqueue_script('dataTblJs');
@@ -27,6 +28,7 @@ function tblAssetsJs(){
     wp_enqueue_script('myScript');
 }
 add_action('admin_print_scripts' , 'tblAssetsJs');
+add_action('wp_enqueue_scripts' , 'tblAssetsJs');
 function jal_install() {
     global $wpdb;
     $wp_track_table = $wpdb->prefix . "wtcplugin";
@@ -46,7 +48,47 @@ register_activation_hook(__FILE__, "jal_install");
 
 function wtc_ShortCode($atts){
     $category_id  = (int) $atts['cat_id'];
-    print_r($category_id);
+    $args = array(
+        'post_type' => 'product',
+        'numberposts' => -1,
+        'post_status' => 'publish',
+        'fields' => 'ids',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'product_cat',
+                'field' => 'term_id',
+                'terms' => $category_id,
+                'operator' => 'IN',
+            ),
+        ),
+    );
+    $all_ids = get_posts($args);
+    $tBody = "";
+    for($i = 0 ; $i < count($all_ids) ; $i++){
+        $product = wc_get_product($all_ids[$i]);
+        $tBody .= "<tr>
+                        <td> ". $product->get_name() ." </td>
+                        <td> ". number_format($product->get_price()) ." </td>
+                    </tr>";
+    }
+    $outPutHtml = "<table id='shortcode-tbl'>
+                        <thead>
+                            <tr>
+                                <th>
+                                    نام محصول 
+                                </th>
+                                <th>
+                                    قیمت 
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            $tBody
+                        </tbody>
+                    </table>";
+
+    return $outPutHtml;
+
 }
 
 add_shortcode("wtcTable" , "wtc_ShortCode");

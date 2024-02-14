@@ -14,4 +14,23 @@ window.onload = function(){
         }
 
     });
+    let shortCodeTable = document.querySelector('#shortcode-tbl');
+    console.log('outif');
+    if(shortCodeTable != null){
+        console.log('inif');
+        new DataTable('#shortcode-tbl',{
+            "language": {
+                "lengthMenu": "نمایش _MENU_ در هر صفحه",
+                "zeroRecords": "هیچ چیزی برای نمایش وجود ندارد",
+                "info": "نمایش _PAGE_ از _PAGES_",
+                "infoEmpty": "خالی",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "search": "جستجو : ",
+                'paginate': {
+                    'previous': 'قبلی',
+                    'next': 'بعدی'
+                }
+            }
+        })
+    }
 }
