@@ -19,6 +19,7 @@ window.onload = function(){
     if(shortCodeTable != null){
         console.log('inif');
         new DataTable('#shortcode-tbl',{
+            responsive : true,
             "language": {
                 "lengthMenu": "نمایش _MENU_ در هر صفحه",
                 "zeroRecords": "هیچ چیزی برای نمایش وجود ندارد",
@@ -29,8 +30,8 @@ window.onload = function(){
                 'paginate': {
                     'previous': 'قبلی',
                     'next': 'بعدی'
-                }
-            }
+                },
+            },
         })
     }
 }

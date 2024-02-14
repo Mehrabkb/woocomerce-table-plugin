@@ -8,6 +8,14 @@
   margin-bottom: 30px;
   text-align: center;
 }
-#finalTbl thead th{
+#finalTbl thead th , #shortcode-tbl thead th{
     text-align: right!important;
+}
+#shortcode-tbl_wrapper{
+    padding: 34px;
+    border: 1px solid #000;
+    margin: 35px;
+    -webkit-box-shadow: 4px 7px 14px 4px rgba(168,168,168,1);
+    -moz-box-shadow: 4px 7px 14px 4px rgba(168,168,168,1);
+    box-shadow: 4px 7px 14px 4px rgba(168,168,168,1);
 }

@@ -14,16 +14,20 @@ if( !defined('ABSPATH')){
 
 require_once (__DIR__ . '/add.php');
 function tblAssetsCss() {
-    wp_register_style('dataTblCss', 'https://cdn.datatables.net/v/dt/dt-1.13.10/datatables.min.css');
+    wp_register_style('dataTblCss', 'https://cdn.datatables.net/v/dt/dt-1.13.10/r-2.5.0/datatables.min.css');
     wp_enqueue_style('dataTblCss');
+    wp_register_style('dataTblResponsiveCss' , 'https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css');
+    wp_enqueue_style('dataTblResponsiveCss');
     wp_register_style('myStyles' , plugins_url('woocommerceTblPlugin/assets/styles.css'));
     wp_enqueue_style('myStyles');
 }   
 add_action('admin_print_styles', 'tblAssetsCss');
 add_action('wp_print_styles' , 'tblAssetsCss');
 function tblAssetsJs(){
-    wp_register_script('dataTblJs', 'https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js');
+    wp_register_script('dataTblJs', 'https://cdn.datatables.net/v/dt/dt-1.13.10/r-2.5.0/datatables.min.js');
     wp_enqueue_script('dataTblJs');
+    wp_register_script('dataTblResponsiveJs' , 'https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js');
+    wp_enqueue_script('dataTblResponsiveJs');
     wp_register_script('myScript' , plugins_url('woocommerceTblPlugin/assets/script.js'));
     wp_enqueue_script('myScript');
 }
@@ -71,7 +75,7 @@ function wtc_ShortCode($atts){
                         <td> ". number_format($product->get_price()) ." </td>
                     </tr>";
     }
-    $outPutHtml = "<table id='shortcode-tbl'>
+    $outPutHtml = "<table id='shortcode-tbl' class=\"cell-border display nowrap \" style=\" width: 100%; \">
                         <thead>
                             <tr>
                                 <th>
