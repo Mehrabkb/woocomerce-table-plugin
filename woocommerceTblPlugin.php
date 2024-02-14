@@ -43,3 +43,10 @@ function jal_install() {
 
 // Register the activation hook to call the table creation function
 register_activation_hook(__FILE__, "jal_install");
+
+function wtc_ShortCode($atts){
+    $category_id  = (int) $atts['cat_id'];
+    print_r($category_id);
+}
+
+add_shortcode("wtcTable" , "wtc_ShortCode");
