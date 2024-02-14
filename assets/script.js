@@ -15,9 +15,7 @@ window.onload = function(){
 
     });
     let shortCodeTable = document.querySelector('#shortcode-tbl');
-    console.log('outif');
     if(shortCodeTable != null){
-        console.log('inif');
         new DataTable('#shortcode-tbl',{
             responsive : true,
             "language": {

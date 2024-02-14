@@ -18,18 +18,25 @@ function tblAssetsCss() {
     wp_enqueue_style('dataTblCss');
     wp_register_style('dataTblResponsiveCss' , 'https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css');
     wp_enqueue_style('dataTblResponsiveCss');
+    wp_register_style('inputNumSpinCss' , plugins_url('woocommerceTblPlugin/assets/inputNumSpin/css/input-numspin.min.css'));
+    wp_enqueue_style('inputNumSpinCss');
     wp_register_style('myStyles' , plugins_url('woocommerceTblPlugin/assets/styles.css'));
     wp_enqueue_style('myStyles');
 }   
 add_action('admin_print_styles', 'tblAssetsCss');
 add_action('wp_print_styles' , 'tblAssetsCss');
 function tblAssetsJs(){
+    wp_register_script('jquery' , 'https://code.jquery.com/jquery-3.7.1.js');
+    wp_enqueue_script('jquery');
     wp_register_script('dataTblJs', 'https://cdn.datatables.net/v/dt/dt-1.13.10/r-2.5.0/datatables.min.js');
     wp_enqueue_script('dataTblJs');
     wp_register_script('dataTblResponsiveJs' , 'https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js');
     wp_enqueue_script('dataTblResponsiveJs');
+    wp_register_script('inputNumSpinJs' , plugins_url('woocommerceTblPlugin/assets/inputNumSpin/js/input-numspin.min.js'));
+    wp_enqueue_script('inputNumSpinJs');
     wp_register_script('myScript' , plugins_url('woocommerceTblPlugin/assets/script.js'));
     wp_enqueue_script('myScript');
+
 }
 add_action('admin_print_scripts' , 'tblAssetsJs');
 add_action('wp_enqueue_scripts' , 'tblAssetsJs');
@@ -73,6 +80,7 @@ function wtc_ShortCode($atts){
         $tBody .= "<tr>
                         <td> ". $product->get_name() ." </td>
                         <td> ". number_format($product->get_price()) ." </td>
+                        <td> <input id='count' type='number' data-numspin numspin-input-scheme=\"flat\" step=\"1\"min=\"0\" max=\"15\" value=\"1\"> </td>
                     </tr>";
     }
     $outPutHtml = "<table id='shortcode-tbl' class=\"cell-border display nowrap \" style=\" width: 100%; \">
@@ -83,6 +91,9 @@ function wtc_ShortCode($atts){
                                 </th>
                                 <th>
                                     قیمت 
+                                </th>
+                                <th>
+                                    تعداد
                                 </th>
                             </tr>
                         </thead>
