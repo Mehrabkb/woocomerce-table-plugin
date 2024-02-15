@@ -42,10 +42,26 @@ function changInputCount(el){
     }else if(el.getAttribute('data-role') == 'increase'){
         input.value = increaseInputValue(parseInt(input.value));
     }
+    print_final_price(input.value , parseInt(el.parentElement.parentElement.querySelector('.unit-price').getAttribute('data-pure-price')) , el.parentElement.parentElement.querySelector('.final-price'));
 }
 function decreaseInputValue(value){
     return parseInt(value) - 1;
 }
 function increaseInputValue(value){
     return parseInt(value) + 1;
+}
+function print_final_price(inputValue , unitPrice , finalEl){
+    inputValue = parseInt(inputValue);
+    finalEl.innerHTML =  showMoney((inputValue * unitPrice).toString());
+}
+function showMoney(nStr) {
+    nStr += '';
+    x = nStr.split('.');
+    x1 = x[0];
+    x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return x1 + x2;
 }
