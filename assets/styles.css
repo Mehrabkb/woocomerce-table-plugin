@@ -1,5 +1,6 @@
 .dataTables_wrapper{
     width :80%;
+    max-width: 1280px!important;
     margin : 0 auto;
 }
 .add-form{

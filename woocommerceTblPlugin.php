@@ -77,11 +77,12 @@ function wtc_ShortCode($atts){
     $tBody = "";
     for($i = 0 ; $i < count($all_ids) ; $i++){
         $product = wc_get_product($all_ids[$i]);
-        $tBody .= "<tr>
+        $tBody .= "<tr data-product-id='". $all_ids[$i] ."'>
                         <td> ". $product->get_name() ." </td>
                         <td class='unit-price' data-pure-price='".$product->get_price()."'> ". number_format($product->get_price()) ." </td>
-                        <td> <button type='button' class='button' onclick='changInputCount(this)' data-role='decrease'>-</button> <input id='count' type='number' value='0' min='0' max='100' disabled> <button type='button' class='button' onclick='changInputCount(this)' data-role='increase' class='increase-button' >+</button> </td>
+                        <td> <button type='button' class='button' onclick='changInputCount(this)' data-role='decrease'>-</button> <input style='width: 40px;' id='count' type='number' value='0' min='0' max='100' disabled> <button type='button' class='button' onclick='changInputCount(this)' data-role='increase' class='increase-button' >+</button> </td>
                         <td class='final-price'>".number_format(0)."</td>
+                        <td><button class='button button-primary'>افزودن</button></td>
                     </tr>";
     }
     $outPutHtml = "<table id='shortcode-tbl' class=\"cell-border display nowrap \" style=\" width: 100%; \">
@@ -98,6 +99,9 @@ function wtc_ShortCode($atts){
                                 </th>
                                 <th>
                                     قیمت کل
+                                </th>
+                                <th>
+                                    عملیات
                                 </th>
                             </tr>
                         </thead>
