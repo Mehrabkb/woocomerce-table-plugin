@@ -33,3 +33,19 @@ window.onload = function(){
         })
     }
 }
+function changInputCount(el){
+    let input = el.parentElement.querySelector('input')
+    if(el.getAttribute('data-role') == 'decrease'){
+        if(parseInt(input.value) > 0){
+            input.value = decreaseInputValue(parseInt(input.value));
+        }
+    }else if(el.getAttribute('data-role') == 'increase'){
+        input.value = increaseInputValue(parseInt(input.value));
+    }
+}
+function decreaseInputValue(value){
+    return parseInt(value) - 1;
+}
+function increaseInputValue(value){
+    return parseInt(value) + 1;
+}

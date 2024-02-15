@@ -19,3 +19,14 @@
     -moz-box-shadow: 4px 7px 14px 4px rgba(168,168,168,1);
     box-shadow: 4px 7px 14px 4px rgba(168,168,168,1);
 }
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

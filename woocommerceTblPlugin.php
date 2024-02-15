@@ -80,7 +80,7 @@ function wtc_ShortCode($atts){
         $tBody .= "<tr>
                         <td> ". $product->get_name() ." </td>
                         <td> ". number_format($product->get_price()) ." </td>
-                        <td> <input id='count' type='number' data-numspin numspin-input-scheme=\"flat\" step=\"1\"min=\"0\" max=\"15\" value=\"1\"> </td>
+                        <td> <button type='button' onclick='changInputCount(this)' data-role='decrease'>-</button> <input id='count' type='number' value='0' min='0' max='100' disabled> <button type='button' onclick='changInputCount(this)' data-role='increase' class='increase-button' >+</button> </td>
                     </tr>";
     }
     $outPutHtml = "<table id='shortcode-tbl' class=\"cell-border display nowrap \" style=\" width: 100%; \">
