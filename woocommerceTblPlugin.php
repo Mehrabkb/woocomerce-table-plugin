@@ -77,12 +77,12 @@ function wtc_ShortCode($atts){
     $tBody = "";
     for($i = 0 ; $i < count($all_ids) ; $i++){
         $product = wc_get_product($all_ids[$i]);
-        $tBody .= "<tr data-product-id='". $all_ids[$i] ."'>
+        $tBody .= "<tr data-url-ajax='". admin_url('admin-ajax.php') ."' data-product-id='". $all_ids[$i] ."'>
                         <td> ". $product->get_name() ." </td>
                         <td class='unit-price' data-pure-price='".$product->get_price()."'> ". number_format($product->get_price()) ." </td>
                         <td> <button type='button' class='button' onclick='changInputCount(this)' data-role='decrease'>-</button> <input style='width: 40px;' id='count' type='number' value='0' min='0' max='100' disabled> <button type='button' class='button' onclick='changInputCount(this)' data-role='increase' class='increase-button' >+</button> </td>
                         <td class='final-price'>".number_format(0)."</td>
-                        <td><button class='button button-primary'>افزودن</button></td>
+                        <td><button class='button button-primary add_to_card_ajax_button'>افزودن</button></td>
                     </tr>";
     }
     $outPutHtml = "<table id='shortcode-tbl' class=\"cell-border display nowrap \" style=\" width: 100%; \">
@@ -115,3 +115,11 @@ function wtc_ShortCode($atts){
 }
 
 add_shortcode("wtcTable" , "wtc_ShortCode");
+add_action('wp_ajax_my_plugin_action', 'my_plugin_ajax_handler');
+function my_plugin_ajax_handler() {
+    // Handle AJAX request here
+    // You can access POST data using $_POST array
+    // Return the response using echo or wp_send_json()
+    wp_send_json_success('Success!');
+    wp_die(); // Always end with wp_die()
+}

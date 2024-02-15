@@ -65,3 +65,30 @@ function showMoney(nStr) {
     }
     return x1 + x2;
 }
+jQuery(document).ready(function($){
+    $('.add_to_card_ajax_button').on('click' , function(e){
+        e.preventDefault();
+        let that = $(this);
+        let url = that.parent().parent().attr('data-url-ajax');
+        let product_id = that.parent().parent().attr('data-product-id');
+        let inputCount = parseInt(that.parent().parent().find('input#count').val()) ;
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+                action: 'add_to_cart',
+                product_id: product_id,
+                quantity: inputCount // Include the quantity data
+            },
+            success: function(response) {
+                alert('Item added to cart!');
+                // Optionally update cart icon or message
+            },
+            error: function(xhr, status, error) {
+                alert('Error adding item to cart. Please try again later.');
+                console.log(error);
+                // Optionally display an error message
+            }
+        });
+    });
+});
