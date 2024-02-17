@@ -20,6 +20,10 @@ function tblAssetsCss() {
     wp_enqueue_style('dataTblResponsiveCss');
     wp_register_style('inputNumSpinCss' , plugins_url('woocommerceTblPlugin/assets/inputNumSpin/css/input-numspin.min.css'));
     wp_enqueue_style('inputNumSpinCss');
+    wp_register_style('alertifyCss' , 'https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css');
+    wp_enqueue_style('alertifyCss');
+    wp_register_style('alertifyThemeCss' , 'https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css');
+    wp_enqueue_style('alertifyThemeCss');
     wp_register_style('myStyles' , plugins_url('woocommerceTblPlugin/assets/styles.css'));
     wp_enqueue_style('myStyles');
 }   
@@ -34,6 +38,8 @@ function tblAssetsJs(){
     wp_enqueue_script('dataTblResponsiveJs');
     wp_register_script('inputNumSpinJs' , plugins_url('woocommerceTblPlugin/assets/inputNumSpin/js/input-numspin.min.js'));
     wp_enqueue_script('inputNumSpinJs');
+    wp_register_script('alertifyJs' , 'https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js');
+    wp_enqueue_script('alertifyJs');
     wp_register_script('myScript' , plugins_url('woocommerceTblPlugin/assets/script.js'));
     wp_enqueue_script('myScript');
 
@@ -126,9 +132,25 @@ function custom_add_to_cart() {
     $product_id = $_POST['product_id'];
     $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
 
-    $result = WC()->cart->add_to_cart($product_id, $quantity);
-    if($result){
-        return $woocommerce;
+
+    if($quantity < 1){
+        echo json_encode(  [
+                'status' => false,
+                'msg' => 'تعداد وارد شده صحیح نمی باشد '
+        ]);
+    }else{
+        $result = WC()->cart->add_to_cart($product_id, $quantity);
+        if($result){
+            echo json_encode(  [
+                'status' => true,
+                'msg' => 'با موفقیت ثبت شد '
+            ]);
+        }else{
+            echo json_encode(  [
+                'status' => false,
+                'msg' => 'خطایی رخ داده است'
+            ]);
+        }
     }
     die();
 }
@@ -138,7 +160,6 @@ function my_plugin_ajax_handler() {
     // Handle AJAX request here?>
 <script type="text/javascript">
     jQuery(document).ready(function($){
-        console.log('hello');
         $('.add-to-cart-btn').on('click' , function(e){
             e.preventDefault();
             let that = $(this);
@@ -152,8 +173,12 @@ function my_plugin_ajax_handler() {
             };
             $.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
                 // Optionally, you can handle the response here
-                console.log(response);
-                alert('با موفقیت به سبد خرید اضافه شد');
+                let r = JSON.parse(response);
+                if(r.status){
+                    alertify.success(r.msg);
+                }else{
+                    alertify.error(r.msg);
+                }
             });
     });
     });
